@@ -208,6 +208,7 @@ export class Sampler extends Instrument<SamplerOptions> {
 					if (index !== -1) {
 						sources.splice(index, 1);
 					}
+					this._activeSources.set(midi, sources);
 				}
 			};
 		});
@@ -232,7 +233,8 @@ export class Sampler extends Instrument<SamplerOptions> {
 				sources.forEach(source => {
 					source.stop(time);
 				});
-				this._activeSources.set(midi, []);
+				//moved to the on-ended function
+				// this._activeSources.set(midi, []);
 			}
 		});
 		return this;

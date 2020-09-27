@@ -13,6 +13,7 @@
 		"Tone"
 	],
 	"scripts": {
+		"prepare": "npm run build",
 		"build": "npm run increment && rm -rf build && npm run ts:build && npm run webpack:build",
 		"codecov": "codecov",
 		"docs": "node scripts/generate_docs.js",
