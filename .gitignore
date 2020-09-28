@@ -18,9 +18,11 @@ test/performance
 test/mainTest.js
 test/Main.js
 test/supports.html
-coverage/
 
-build/*
+coverage/*
+examples/*
+scripts/*
+test/*
 dist/*
 
 examples/scratch.js
