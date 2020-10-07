@@ -27,7 +27,6 @@ dist/*
 examples/scratch.js
 examples/scratch.ts
 Tone/version.js
-Tone/version.ts
 Tone/index.js
 test/test.js
 
