@@ -42,6 +42,7 @@ export declare class Sampler extends Instrument<SamplerOptions> {
      * The stored and loaded buffers
      */
     private _buffers;
+    private _sourceIndex;
     /**
      * The object of all currently playing BufferSources
      */
@@ -92,7 +93,7 @@ export declare class Sampler extends Instrument<SamplerOptions> {
      * @param  notes	The note to release, or an array of notes.
      * @param  time     	When to release the note.
      */
-    triggerRelease(notes: Frequency | Frequency[], time?: Time): this;
+    triggerRelease(notes: Frequency | Frequency[], time?: Time, startTime?: Time): this;
     /**
      * Release all currently active notes.
      * @param  time     	When to release the notes.

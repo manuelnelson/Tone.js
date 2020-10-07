@@ -34,6 +34,7 @@ export class Sampler extends Instrument {
     constructor() {
         super(optionsFromArguments(Sampler.getDefaults(), arguments, ["urls", "onload", "baseUrl"], "urls"));
         this.name = "Sampler";
+        this._sourceIndex = 0;
         /**
          * The object of all currently playing BufferSources
          */
@@ -122,6 +123,7 @@ export class Sampler extends Instrument {
             const source = new ToneBufferSource({
                 url: buffer,
                 context: this.context,
+                id: (midi + this.toSeconds(time)),
                 curve: this.curve,
                 fadeIn: this.attack,
                 fadeOut: this.release,
@@ -151,7 +153,7 @@ export class Sampler extends Instrument {
      * @param  notes	The note to release, or an array of notes.
      * @param  time     	When to release the note.
      */
-    triggerRelease(notes, time) {
+    triggerRelease(notes, time, startTime) {
         this.log("triggerRelease", notes, time);
         if (!Array.isArray(notes)) {
             notes = [notes];
@@ -160,13 +162,16 @@ export class Sampler extends Instrument {
             const midi = new FrequencyClass(this.context, note).toMidi();
             // find the note
             if (this._activeSources.has(midi) && this._activeSources.get(midi).length) {
-                const sources = this._activeSources.get(midi);
+                let sources = this._activeSources.get(midi);
+                if (startTime) {
+                    //only release the notes tied to this start time
+                    let id = midi + this.toSeconds(startTime);
+                    sources = sources.filter(x => x.id == id);
+                }
                 time = this.toSeconds(time);
                 sources.forEach(source => {
                     source.stop(time);
                 });
-                //moved to the on-ended function
-                // this._activeSources.set(midi, []);
             }
         });
         return this;
@@ -206,11 +211,11 @@ export class Sampler extends Instrument {
             assert(isArray(notes), "notes must be an array when duration is array");
             notes.forEach((note, index) => {
                 const d = duration[Math.min(index, duration.length - 1)];
-                this.triggerRelease(note, computedTime + this.toSeconds(d));
+                this.triggerRelease(note, computedTime + this.toSeconds(d), computedTime);
             });
         }
         else {
-            this.triggerRelease(notes, computedTime + this.toSeconds(duration));
+            this.triggerRelease(notes, computedTime + this.toSeconds(duration), computedTime);
         }
         return this;
     }

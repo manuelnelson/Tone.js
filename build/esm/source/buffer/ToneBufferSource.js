@@ -21,6 +21,10 @@ export class ToneBufferSource extends OneShotSource {
         this._source = this.context.createBufferSource();
         this._internalChannels = [this._source];
         /**
+         * The private instance of the buffer object
+         */
+        this._id = 0;
+        /**
          * indicators if the source has started/stopped
          */
         this._sourceStarted = false;
@@ -49,6 +53,7 @@ export class ToneBufferSource extends OneShotSource {
             url: new ToneAudioBuffer(),
             loop: false,
             loopEnd: 0,
+            id: 0,
             loopStart: 0,
             onload: noOp,
             onerror: noOp,
@@ -63,6 +68,15 @@ export class ToneBufferSource extends OneShotSource {
     }
     set fadeIn(t) {
         this._fadeIn = t;
+    }
+    /**
+     * The fadeIn time of the amplitude envelope.
+     */
+    get id() {
+        return this._id;
+    }
+    set id(t) {
+        this._id = t;
     }
     /**
      * The fadeOut time of the amplitude envelope.
