@@ -56,7 +56,6 @@ export class Sampler extends Instrument<SamplerOptions> {
 	 */
 	private _buffers: ToneAudioBuffers;
 
-	private _sourceIndex: number = 0;
 	/**
 	 * The object of all currently playing BufferSources
 	 */
