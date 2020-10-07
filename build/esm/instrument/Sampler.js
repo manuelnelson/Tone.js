@@ -122,7 +122,6 @@ export class Sampler extends Instrument {
             const source = new ToneBufferSource({
                 url: buffer,
                 context: this.context,
-                id: (midi + this.toSeconds(time)),
                 curve: this.curve,
                 fadeIn: this.attack,
                 fadeOut: this.release,

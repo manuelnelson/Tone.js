@@ -86,6 +86,7 @@ export class ToneBufferSource extends OneShotSource<ToneBufferSourceOptions> {
 		});
 
 		// set some values initially
+		this._id = options.id;
 		this.loop = options.loop;
 		this.loopStart = options.loopStart;
 		this.loopEnd = options.loopEnd;

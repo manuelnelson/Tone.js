@@ -188,7 +188,6 @@ export class Sampler extends Instrument<SamplerOptions> {
 			const source = new ToneBufferSource({
 				url: buffer,
 				context: this.context,
-				id:(midi + this.toSeconds(time)), //two notes can't play at once so this should be good.
 				curve: this.curve,
 				fadeIn: this.attack,
 				fadeOut: this.release,
