@@ -34,7 +34,6 @@ export class Sampler extends Instrument {
     constructor() {
         super(optionsFromArguments(Sampler.getDefaults(), arguments, ["urls", "onload", "baseUrl"], "urls"));
         this.name = "Sampler";
-        this._sourceIndex = 0;
         /**
          * The object of all currently playing BufferSources
          */

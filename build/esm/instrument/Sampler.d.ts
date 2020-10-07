@@ -42,7 +42,6 @@ export declare class Sampler extends Instrument<SamplerOptions> {
      * The stored and loaded buffers
      */
     private _buffers;
-    private _sourceIndex;
     /**
      * The object of all currently playing BufferSources
      */
