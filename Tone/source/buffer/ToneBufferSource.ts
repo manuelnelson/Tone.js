@@ -15,6 +15,7 @@ export interface ToneBufferSourceOptions extends OneShotSourceOptions {
 	url: string | AudioBuffer | ToneAudioBuffer;
 	curve: ToneBufferSourceCurve;
 	playbackRate: Positive;
+	id:number;
 	fadeIn: Time;
 	fadeOut: Time;
 	loopStart: Time;
@@ -47,6 +48,12 @@ export class ToneBufferSource extends OneShotSource<ToneBufferSourceOptions> {
 	 * The private instance of the buffer object
 	 */
 	private _buffer: ToneAudioBuffer;
+
+	/**
+	 * The private instance of the buffer object
+	 */
+	private _id: number = 0;
+
 
 	/**
 	 * indicators if the source has started/stopped
@@ -92,6 +99,7 @@ export class ToneBufferSource extends OneShotSource<ToneBufferSourceOptions> {
 			url: new ToneAudioBuffer(),
 			loop: false,
 			loopEnd: 0,
+			id:0,
 			loopStart: 0,
 			onload: noOp,
 			onerror: noOp,
@@ -107,6 +115,16 @@ export class ToneBufferSource extends OneShotSource<ToneBufferSourceOptions> {
 	}
 	set fadeIn(t: Time) {
 		this._fadeIn = t;
+	}
+
+	/**
+	 * The fadeIn time of the amplitude envelope.
+	 */
+	get id(): number {
+		return this._id;
+	}
+	set id(t: number) {
+		this._id = t;
 	}
 
 	/**
