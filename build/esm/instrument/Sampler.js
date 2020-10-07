@@ -122,6 +122,7 @@ export class Sampler extends Instrument {
             const source = new ToneBufferSource({
                 url: buffer,
                 context: this.context,
+                id: `${midi}${this.toSeconds(time)}`,
                 curve: this.curve,
                 fadeIn: this.attack,
                 fadeOut: this.release,
@@ -163,7 +164,7 @@ export class Sampler extends Instrument {
                 let sources = this._activeSources.get(midi);
                 if (startTime) {
                     //only release the notes tied to this start time
-                    let id = midi + this.toSeconds(startTime);
+                    let id = `${midi}${this.toSeconds(startTime)}`;
                     sources = sources.filter(x => x.id == id);
                 }
                 time = this.toSeconds(time);

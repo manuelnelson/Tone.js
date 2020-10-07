@@ -23,7 +23,7 @@ export class ToneBufferSource extends OneShotSource {
         /**
          * The private instance of the buffer object
          */
-        this._id = 0;
+        this._id = '';
         /**
          * indicators if the source has started/stopped
          */
@@ -54,7 +54,7 @@ export class ToneBufferSource extends OneShotSource {
             url: new ToneAudioBuffer(),
             loop: false,
             loopEnd: 0,
-            id: 0,
+            id: '',
             loopStart: 0,
             onload: noOp,
             onerror: noOp,
