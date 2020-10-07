@@ -56,6 +56,7 @@ export class Sampler extends Instrument<SamplerOptions> {
 	 */
 	private _buffers: ToneAudioBuffers;
 
+	private _sourceIndex: number = 0;
 	/**
 	 * The object of all currently playing BufferSources
 	 */
@@ -188,6 +189,7 @@ export class Sampler extends Instrument<SamplerOptions> {
 			const source = new ToneBufferSource({
 				url: buffer,
 				context: this.context,
+				id:(midi + this.toSeconds(time)), //two notes can't play at once so this should be good.
 				curve: this.curve,
 				fadeIn: this.attack,
 				fadeOut: this.release,
@@ -219,7 +221,7 @@ export class Sampler extends Instrument<SamplerOptions> {
 	 * @param  notes	The note to release, or an array of notes.
 	 * @param  time     	When to release the note.
 	 */
-	triggerRelease(notes: Frequency | Frequency[], time?: Time): this {
+	triggerRelease(notes: Frequency | Frequency[], time?: Time, startTime?:Time): this {
 		this.log("triggerRelease", notes, time);
 		if (!Array.isArray(notes)) {
 			notes = [notes];
@@ -228,13 +230,16 @@ export class Sampler extends Instrument<SamplerOptions> {
 			const midi = new FrequencyClass(this.context, note).toMidi();
 			// find the note
 			if (this._activeSources.has(midi) && (this._activeSources.get(midi) as ToneBufferSource[]).length) {
-				const sources = this._activeSources.get(midi) as ToneBufferSource[];
+				let sources = this._activeSources.get(midi) as ToneBufferSource[];
+				if(startTime) {
+					//only release the notes tied to this start time
+					let id = midi + this.toSeconds(startTime);
+					sources = sources.filter(x => x.id == id)
+				}
 				time = this.toSeconds(time);
 				sources.forEach(source => {
 					source.stop(time);
 				});
-				//moved to the on-ended function
-				// this._activeSources.set(midi, []);
 			}
 		});
 		return this;
@@ -282,10 +287,10 @@ export class Sampler extends Instrument<SamplerOptions> {
 			assert(isArray(notes), "notes must be an array when duration is array");
 			(notes as Frequency[]).forEach((note, index) => {
 				const d = duration[Math.min(index, duration.length - 1)];
-				this.triggerRelease(note, computedTime + this.toSeconds(d));
+				this.triggerRelease(note, computedTime + this.toSeconds(d), computedTime);
 			});
 		} else {
-			this.triggerRelease(notes, computedTime + this.toSeconds(duration));
+			this.triggerRelease(notes, computedTime + this.toSeconds(duration), computedTime);
 		}
 		return this;
 	}
