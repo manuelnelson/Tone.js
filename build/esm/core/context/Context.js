@@ -140,6 +140,11 @@ export class Context extends BaseContext {
         const context = this._context;
         return context.createMediaStreamSource(stream);
     }
+    createMediaElementSource(element) {
+        assert(isAudioContext(this._context), "Not available if OfflineAudioContext");
+        const context = this._context;
+        return context.createMediaElementSource(element);
+    }
     createMediaStreamDestination() {
         assert(isAudioContext(this._context), "Not available if OfflineAudioContext");
         const context = this._context;
@@ -333,7 +338,7 @@ export class Context extends BaseContext {
      * to initially start the AudioContext. See [[Tone.start]]
      */
     resume() {
-        if (this._context.state === "suspended" && isAudioContext(this._context)) {
+        if (isAudioContext(this._context)) {
             return this._context.resume();
         }
         else {
